@@ -25,7 +25,9 @@ class BurgerBuilder extends Component {
 
   componentDidMount() {
     axios.get("/ingredients.json").then(({ data: response }) => {
-      this.setState({ ingredients: response });
+      const totalPrice=Object.keys(response).map(key=>response[key]*INGREDIENT_PRICES[key]).reduce((sum,el)=>sum+el,0);
+      this.setState({ ingredients: response ,totalPrice});
+
     });
   }
 
@@ -60,7 +62,10 @@ class BurgerBuilder extends Component {
     updatedIngredients[type] = updatedCount;
     const priceDeduction = INGREDIENT_PRICES[type];
     const oldPrice = this.state.totalPrice;
-    const newPrice = oldPrice - priceDeduction;
+    let newPrice = oldPrice - priceDeduction;
+    if(newPrice<=0){
+      newPrice=-1*newPrice;
+    }
     this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
     this.updatePurchasableState(updatedIngredients);
   };
