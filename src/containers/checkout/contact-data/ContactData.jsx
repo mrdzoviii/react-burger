@@ -62,6 +62,14 @@ class ContactData extends Component {
     ingredients: {}
   };
 
+  handleInputChange = (event, name) => {
+    const updatedForm = { ...this.state.orderForm };
+    const updatedFormField = { ...this.state.orderForm[name] };
+    updatedFormField.value = event.target.value;
+    updatedForm[name] = updatedFormField;
+    this.setState({ orderForm: updatedForm });
+  };
+
   orderHandler = e => {
     e.preventDefault();
     const order = {
@@ -110,6 +118,7 @@ class ContactData extends Component {
               elementType={element.config.elementType}
               elementConfig={element.config.elementConfig}
               value={element.config.value}
+              changed={e => this.handleInputChange(e, element.id)}
             />
           ))}
           <Button btnType="Success" clicked={this.orderHandler}>
