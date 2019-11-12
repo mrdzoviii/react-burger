@@ -89,11 +89,12 @@ class ContactData extends Component {
     const updatedForm = { ...this.state.orderForm };
     const updatedFormField = { ...this.state.orderForm[name] };
     updatedFormField.value = event.target.value;
-    updatedFormField.valid = this.checkValidity(
-      event.target.value,
-      updatedFormField.validation
-    );
-    console.log(updatedFormField);
+    if (updatedFormField.validation) {
+      updatedFormField.valid = this.checkValidity(
+        updatedFormField.value,
+        updatedFormField.validation
+      );
+    }
     updatedForm[name] = updatedFormField;
     this.setState({ orderForm: updatedForm });
   };
@@ -152,8 +153,10 @@ class ContactData extends Component {
           {formsElementsArray.map(element => (
             <Input
               key={element.id}
+              invalid={!element.config.valid}
               elementType={element.config.elementType}
               elementConfig={element.config.elementConfig}
+              shouldValidate={element.config.validation}
               value={element.config.value}
               changed={e => this.handleInputChange(e, element.id)}
             />
