@@ -17,7 +17,8 @@ class ContactData extends Component {
         validation: {
           required: true
         },
-        valid: true
+        valid: false,
+        touched: false
       },
       email: {
         elementType: "input",
@@ -29,7 +30,8 @@ class ContactData extends Component {
         validation: {
           required: true
         },
-        valid: true
+        valid: false,
+        touched: false
       },
       street: {
         elementType: "input",
@@ -41,7 +43,8 @@ class ContactData extends Component {
         validation: {
           required: true
         },
-        valid: true
+        valid: false,
+        touched: false
       },
       postalCode: {
         elementType: "input",
@@ -55,7 +58,8 @@ class ContactData extends Component {
           minLength: 5,
           maxLength: 5
         },
-        valid: true
+        valid: false,
+        touched: false
       },
       country: {
         elementType: "input",
@@ -67,7 +71,8 @@ class ContactData extends Component {
         validation: {
           required: true
         },
-        valid: true
+        valid: false,
+        touched: false
       },
       deliveryMethod: {
         elementType: "select",
@@ -77,8 +82,7 @@ class ContactData extends Component {
             { value: "cheapest", displayValue: "Cheapest" }
           ]
         },
-        value: "",
-        valid: true
+        value: ""
       }
     },
     loading: false,
@@ -89,6 +93,7 @@ class ContactData extends Component {
     const updatedForm = { ...this.state.orderForm };
     const updatedFormField = { ...this.state.orderForm[name] };
     updatedFormField.value = event.target.value;
+    updatedFormField.touched = true;
     if (updatedFormField.validation) {
       updatedFormField.valid = this.checkValidity(
         updatedFormField.value,
@@ -158,6 +163,7 @@ class ContactData extends Component {
               elementConfig={element.config.elementConfig}
               shouldValidate={element.config.validation}
               value={element.config.value}
+              touched={element.config.touched}
               changed={e => this.handleInputChange(e, element.id)}
             />
           ))}
