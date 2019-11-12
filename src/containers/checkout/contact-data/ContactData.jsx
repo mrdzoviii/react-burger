@@ -72,19 +72,14 @@ class ContactData extends Component {
 
   orderHandler = e => {
     e.preventDefault();
+    const formData = {};
+    for (let key in this.state.orderForm) {
+      formData[key] = this.state.orderForm[key].value;
+    }
     const order = {
       ingredients: this.props.ingredients,
       price: this.props.totalPrice,
-      customer: {
-        name: "Maximilian Shwarzmuller",
-        address: {
-          street: "Street 15",
-          zipCode: "4343",
-          country: "Germany"
-        },
-        email: "danilovic.dd@ggg.com"
-      },
-      deliveryMethod: "fastest"
+      orderData: formData
     };
     this.setState({ loading: true });
     axios.post("/order.json", order).then(
@@ -111,7 +106,7 @@ class ContactData extends Component {
     return (
       <div className={classes.ContactData}>
         <h4>Enter Your contact data</h4>
-        <form>
+        <form onSubmit={this.orderHandler}>
           {formsElementsArray.map(element => (
             <Input
               key={element.id}
@@ -121,7 +116,7 @@ class ContactData extends Component {
               changed={e => this.handleInputChange(e, element.id)}
             />
           ))}
-          <Button btnType="Success" clicked={this.orderHandler}>
+          <Button btnType="Success" type="submit">
             ORDER
           </Button>
         </form>
